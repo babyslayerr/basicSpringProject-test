@@ -1,0 +1,24 @@
+# 빌드도구가 프로젝트를 빌드할 때 src/main/resource 에있는 파일들을 build/resources/main 루트로 복사하고 이 경로를 classpath로 지정하고 SpringBoot가 설정파일을 탐색한다.
+# https://docs.spring.io/spring-boot/appendix/application-properties/index.html 왼쪽 url은 공통속성 설정 필드들이다.
+
+spring:
+  h2:
+    console:
+      # h2 콘솔 활성화 여부
+      enabled: true
+      # h2 콘솔 경로(default:/h2-console)
+      path: /h2-console
+
+  # Spring JDBC에서 필요한 설정값들
+  datasource:
+    # 드라이브 클래스 경로 및 클래스 이름(DB에 해당하는 Driver 클래스가 있어야함)
+    driver-class-name: org.h2.Driver
+    # DB url 경로
+    url: jdbc:h2:~/test #;MODE=MySQL << v2.~에선 모드추가가능
+    # DB username
+    username: sa
+    # DB password
+    password:
+  jpa:
+    hibernate:
+      ddl-auto: create # (테스트 모드에서만 사용!!)jpa hibernate ddl-auto 속성값이며 애플리케이션이 실행될 때, 테이블을 드랍하고 새로 생성한다.

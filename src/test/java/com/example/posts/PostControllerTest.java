@@ -60,14 +60,14 @@ public class PostControllerTest {
     public void postPostTest() throws Exception {
         // given
         Map<String,String> person = new HashMap<>();
-        person.put("id", "1");
+
         person.put("subject", "제목");
         person.put("content", "내용");
 
 
         // when
-        ResultActions postResult = mockMvc.perform(MockMvcRequestBuilders.post("/api/post")
-                .content(person.toString()));
+        ResultActions postResult = mockMvc.perform(MockMvcRequestBuilders.post("/api/post").contentType("application/json")
+                .content("{\"subject\" : \"" + person.get("subject") + "\" , \"content\" : \"" + person.get("content") +"\"}"));
 
         // then (return값은 없기 때문에 http상태코드만)
         postResult.andExpect(MockMvcResultMatchers.status().isOk());

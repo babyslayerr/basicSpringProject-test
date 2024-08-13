@@ -3,6 +3,7 @@ package com.example.posts;
 import com.example.entity.Person;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service // 트랜잭션(한 업무단위)의 영역이 되는 서비스 영억
 @RequiredArgsConstructor // 레파지토리 구현(의존성)을 주입받기 위함
@@ -25,6 +26,7 @@ public class PostService {
      * @Param Post
      * @return
      */
+    @Transactional // 업무 저장단위 지정, 업무 별로 이상시 롤백
     public Post savePost(Post post){
         return postRepository.save(post);
     }

@@ -1,6 +1,7 @@
 package com.example.posts;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -29,5 +30,15 @@ public class PostController {
     @PostMapping("/api/post")
     public void postPost(@RequestBody Post post) { // model과 mapping시키는 어노테이션
         postService.savePost(post);
+    }
+
+    /**
+     * paging한 List 제공
+     * @param page -> 0-basedIndex
+     * @return Page<Post>(totalPage 및 totalElements 제공)
+     */
+    @GetMapping("/api/getList")
+    public Page<Post> getPostList(int page){
+        return postService.findPostList(page);
     }
 }

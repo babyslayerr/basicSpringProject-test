@@ -2,6 +2,9 @@ package com.example.posts;
 
 import com.example.entity.Person;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -29,5 +32,17 @@ public class PostService {
     @Transactional // 업무 저장단위 지정, 업무 별로 이상시 롤백
     public Post savePost(Post post){
         return postRepository.save(post);
+    }
+
+    /***
+     * Post 다중 조회
+     * 10건씩 검색
+     * @Param page 페이지
+     */
+    public Page<Post> findPostList(int page){
+        // 검색 객체를 만드는 PageRequest는 pageable을 구현한 구현체이다.
+        // page는 0-based-index이다(0부터 시작)
+        Pageable pageable = PageRequest.of(page, 10);
+        return postRepository.findAll(pageable);
     }
 }

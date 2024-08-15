@@ -1,6 +1,7 @@
 package com.example.posts;
 
 import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -107,6 +108,29 @@ public class PostControllerTest {
                 // 가져온 리스트 수가 2가 되야함
                 MockMvcResultMatchers.jsonPath("$.totalElements").value(2)
         );
+    }
 
+    @Test
+    public void deletePostTest() throws Exception {
+        // given
+        // 삭제될 객체
+        Post post = Post.builder()
+                .subject("글 내용")
+                .content("글 제목")
+                .build();
+
+        // when
+        // 저장
+        Post savedPost = postRepository.save(post);
+
+        // 결과값 가져오기
+        ResultActions resultActions = mockMvc.perform(MockMvcRequestBuilders.delete("/api/post")
+                .param("id", String.valueOf(savedPost.getId())));
+
+        // then
+        // 상태코드 200
+        resultActions.andExpect(MockMvcResultMatchers.status().isOk());
+        // ID로 찾은 값이 null
+        Assertions.assertNull(postRepository.findById(1L).orElse(null));
     }
 }

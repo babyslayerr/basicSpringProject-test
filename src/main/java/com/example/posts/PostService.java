@@ -45,4 +45,9 @@ public class PostService {
         Pageable pageable = PageRequest.of(page, 10);
         return postRepository.findAll(pageable);
     }
+
+    public void removePost(Long id){
+        // Id 값을 받아와 없으면 찾음 없으면 에러 던짐
+        postRepository.delete(postRepository.findById(id).orElseThrow());
+    }
 }

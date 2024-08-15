@@ -41,4 +41,13 @@ public class PostController {
     public Page<Post> getPostList(int page){
         return postService.findPostList(page);
     }
+
+    /**
+     * post삭제
+     * @param id : postID
+     */
+    @DeleteMapping("/api/post")
+    public void deletePost(Long id){
+        postService.removePost(id);
+    }
 }

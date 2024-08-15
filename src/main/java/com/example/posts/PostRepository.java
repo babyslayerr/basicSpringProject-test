@@ -17,4 +17,7 @@ public interface PostRepository extends JpaRepository<Post, Long> {
     // Paging되어있는 List를 가져온다.(Page인터페이스 구현체 PageImpl은 SpringDataJpa가 제공한다)
     // Pageable은 검색 조건 모델, Page는 return 모델이다
     Page<Post> findAll(Pageable pageable);
+
+    // 삭제
+    void delete(Post entity);
 }

@@ -37,7 +37,7 @@ public class PostController {
      * @param page -> 0-basedIndex
      * @return Page<Post>(totalPage 및 totalElements 제공)
      */
-    @GetMapping("/api/getList")
+    @GetMapping("/api/getPostList")
     public Page<Post> getPostList(int page){
         return postService.findPostList(page);
     }

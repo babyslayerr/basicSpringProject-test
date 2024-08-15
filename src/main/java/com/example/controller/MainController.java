@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 /**
- * 메인페이지를 제공할 메인컨트롤러
+ * 메인페이지를 제공할 메인컨트롤러(사실 static/index.html은 serverurl 로 접근하면 반환하기 때문에 지금은 필요없긴함)
  */
 
 @Controller // 컨트롤러 클래스 명시(컴포넌트 스캔->(빈 객체로 등록되어 애플리케이션 실행시점에 컨텍스트에 업로드됨)에 사용)

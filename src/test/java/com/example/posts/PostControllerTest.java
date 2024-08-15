@@ -7,6 +7,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.RequestBuilder;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
@@ -75,5 +76,37 @@ public class PostControllerTest {
         // 확인
         ResultActions getResult = mockMvc.perform(MockMvcRequestBuilders.get("/api/post/1"));
         getResult.andExpect(MockMvcResultMatchers.jsonPath("id").value("1"));
+    }
+
+    @Test
+    public void getPostList() throws Exception {
+        // given
+        // 가져올 List 객체들 생성
+        Post post1 = Post.builder()
+                .subject("글 제목1")
+                .content("글 내용1")
+                .build();
+        Post post2 = Post.builder()
+                .subject("글 제목2")
+                .content("글 내용2")
+                .build();
+
+        // when
+        // 저장
+        postRepository.save(post1);
+        postRepository.save(post2);
+
+        // api 테스트 실행 및 결과 가져올 객체
+        ResultActions result = mockMvc.perform(MockMvcRequestBuilders.get("/api/getPostList")
+                .param("page","0") // 가져올 page(쪽)
+        );
+
+
+        // then
+        result.andExpect(
+                // 가져온 리스트 수가 2가 되야함
+                MockMvcResultMatchers.jsonPath("$.totalElements").value(2)
+        );
+
     }
 }

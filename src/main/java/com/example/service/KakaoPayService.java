@@ -1,5 +1,7 @@
 package com.example.service;
 
+import org.springframework.stereotype.Service;
+
 import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
@@ -10,6 +12,7 @@ import java.net.URL;
 * 1. 카카오 페이 애플리케이션 페이지에서 프로젝트 등록(시크릿 키 사용)
 * 2. 카카오 페이 애플리케이션 플랫폼에서 애플리케이션 서버정보 등록
 * */
+@Service
 public class KakaoPayService {
     /**
      * Http통신 테스트
@@ -62,11 +65,13 @@ public class KakaoPayService {
     /**
      * 카카오 결제 준비 메소드
      */
-    public void readyPayment(){
+    public String readyPayment(){
         // 요청할 url준비
         String urlString = "https://open-api.kakaopay.com/online/v1/payment/ready";
         // http 요청객체 초기화
         HttpURLConnection httpURLConnection = null;
+        // return객체 초기화
+        String redirect_pc_url = null;
 
         try {
             //java.net 패키지의 url클래스 호출
@@ -95,9 +100,9 @@ public class KakaoPayService {
                     + "\"quantity\":200," // 상품량
                     + "\"total_amount\":200000," // 총 결제금액
                     + "\"tax_free_amount\":20000," // 공제금액
-                    + "\"approval_url\":\"https://www.naver.com\"," // 결제 성공 redirect_url
-                    + "\"cancel_url\":\"https://www.naver.com\"," // 결제 취소 redirect_url
-                    + "\"fail_url\":\"https://www.naver.com\"" // 결제 실패 redirect_url
+                    + "\"approval_url\":\"http://localhost:8080/\"," // 결제 성공 redirect_url
+                    + "\"cancel_url\":\"http://localhost:8080/\"," // 결제 취소 redirect_url
+                    + "\"fail_url\":\"http://localhost:8080/\"" // 결제 실패 redirect_url
                     + "}";
             // Post요청을 보내기 위한 출력스트림 사용
             httpURLConnection.setDoOutput(true);
@@ -136,6 +141,10 @@ public class KakaoPayService {
             // 응답 내용 출력
             System.out.println("Response : " + sb.toString());
 
+            // redirect될 url
+            redirect_pc_url = getVersion(sb.toString(), "next_redirect_pc_url");
+
+
         } catch (IOException e) {
             // 스택추적 출력
             e.printStackTrace();
@@ -145,5 +154,23 @@ public class KakaoPayService {
                 httpURLConnection.disconnect();
             }
         }
+        return redirect_pc_url;
+    }
+
+    // 간단한 json에서 파라미터 key에 대한 value를 찾기 위함
+    private String getVersion(String json, String key){
+        int keyIndex = json.indexOf(key);
+        if(keyIndex == -1){
+            return null;
+        }
+
+        // keyIndex로부터 : 찾기
+        int startIndex = json.indexOf(":", keyIndex)+2; // value시작점
+        // value이후 있을 쌍따움표 찾기
+        int endIndex = json.indexOf("\"",startIndex);
+
+        // substring은 endIndex-1 까지 보여주지만 위에서 찾은 endIndex는 쌍따옴표 위치이므로 그냥 실행
+        return json.substring(startIndex,endIndex);
+
     }
 }

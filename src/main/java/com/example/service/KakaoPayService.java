@@ -13,6 +13,7 @@ import java.util.Map;
 * 사전 사항
 * 1. 카카오 페이 애플리케이션 페이지에서 프로젝트 등록(시크릿 키 사용)
 * 2. 카카오 페이 애플리케이션 플랫폼에서 애플리케이션 서버정보 등록
+* 3. 단건 결제의 경우 결제준비 API(local to kakao) -> 결제요청 API(kakao to local) -> 결제 승인 API(local to kakao)
 * */
 @Service
 public class KakaoPayService {
